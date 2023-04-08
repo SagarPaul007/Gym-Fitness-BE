@@ -3,7 +3,7 @@ import { Request, Response, NextFunction } from "express";
 import { JWT_SECRET } from "../utils/env";
 
 export const authenticate = (
-  req: Request & { user: { _id?: string } },
+  req: Request & { user?: { _id?: string } },
   _: Response,
   next: NextFunction
 ) => {

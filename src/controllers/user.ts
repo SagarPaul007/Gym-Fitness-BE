@@ -1,26 +1,24 @@
-import UserModel, { MongoUser } from "../models/User.model";
+import UserModel from "../models/User.model";
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
 import { Request, Response } from "express";
 import { JWT_SECRET } from "../utils/env";
 
 export const getUser = async (
-  req: Request & { user: { _id?: string } },
+  req: Request & { user?: { _id?: string } },
   res: Response
 ) => {
   try {
-    const user = await UserModel.findById(req.user._id).lean();
+    const user = await UserModel.findOne(
+      { _id: req.user?._id },
+      { password: 0 }
+    ).lean();
     if (!user) {
       return res.json({ success: false, message: "User not found" });
     }
     res.json({
       success: true,
-      user: {
-        _id: user._id,
-        name: user.name,
-        email: user.email,
-        bookmarks: user.bookmarks,
-      },
+      user,
     });
   } catch (err) {
     res.json({ success: false, message: err.message });
@@ -39,7 +37,6 @@ export const registerUser = async (req: Request, res: Response) => {
       name,
       email,
       password: hashedPassword,
-      bookmarks: [],
     });
     const token = jwt.sign({ _id: user._id }, JWT_SECRET);
     res.json({ success: true, message: "User registered", token });

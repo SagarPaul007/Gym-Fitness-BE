@@ -4,7 +4,6 @@ interface IUser extends mongoose.Document {
   name: string;
   email: string;
   password: string;
-  bookmarks?: string[];
 }
 
 export type MongoUser = Omit<IUser, "__v">;
@@ -23,11 +22,6 @@ const userSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
-    bookmarks: [
-      {
-        type: String,
-      },
-    ],
   },
   {
     timestamps: true,
