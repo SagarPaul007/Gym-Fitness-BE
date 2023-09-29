@@ -11,7 +11,7 @@ export const getUser = async (
   try {
     const user = await UserModel.findOne(
       { _id: req.user?._id },
-      { password: 0 }
+      { password: 0, _id: 0 }
     ).lean();
     if (!user) {
       return res.json({ success: false, message: "User not found" });

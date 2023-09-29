@@ -3,6 +3,7 @@ import mongoose from "mongoose";
 import cors from "cors";
 import { DB_URI, PORT } from "./utils/env";
 import userRoutes from "./routes/user.routes";
+import exercisesRoutes from "./routes/exercise.routes";
 import { authenticate } from "./middlewares/auth";
 
 const app = express();
@@ -15,6 +16,7 @@ app.use(authenticate);
 
 // Routes
 app.use("/user", userRoutes);
+app.use("/exercises", exercisesRoutes);
 
 // Connect to MongoDB
 mongoose
